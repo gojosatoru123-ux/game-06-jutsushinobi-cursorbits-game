@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
-import { prepareAssets } from "./assets";
-import { Game } from "./game";
-import { playMusic } from "./music";
+import { prepareAssets } from './assets';
+import { Game } from './game';
+import { playMusic } from './music';
 
 export default function App() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -22,33 +22,32 @@ export default function App() {
         await prepareAssets();
         setLoading(false);
 
-        // Wait a tiny bit for React to finish rendering the menu DOM
         setTimeout(() => {
-          if (canvasRef.current) {
-            game = new Game(canvasRef.current);
-            game.start();
+          if (!canvasRef.current) return;
 
-            const tick = (timestamp: number) => {
-              const timeDiff = timestamp - cumulativeTime;
-              const steps = Math.min(Math.floor(timeDiff / timeStep), 10);
-              cumulativeTime += steps * timeStep;
+          game = new Game(canvasRef.current);
+          game.start();
 
-              for (let i = 0; i < steps; i++) {
-                game.engine.update_(timeStep);
-              }
+          const tick = (timestamp: number) => {
+            const timeDiff = timestamp - cumulativeTime;
+            const steps = Math.min(Math.floor(timeDiff / timeStep), 10);
+            cumulativeTime += steps * timeStep;
 
-              game.engine.camera.update_();
-              game.engine.renderer.render();
-              playMusic(cumulativeTime);
+            for (let i = 0; i < steps; i++) {
+              game.engine.update_(timeStep);
+            }
 
-              animationFrameId = requestAnimationFrame(tick);
-            };
+            game.engine.camera.update_();
+            game.engine.renderer.render();
+            playMusic(cumulativeTime);
 
             animationFrameId = requestAnimationFrame(tick);
-          }
+          };
+
+          animationFrameId = requestAnimationFrame(tick);
         }, 0);
       } catch (err) {
-        console.error("Initialization failed:", err);
+        console.error('Initialization failed:', err);
       }
     };
 
@@ -61,33 +60,40 @@ export default function App() {
 
   return (
     <div className="game-wrapper">
-      {/* The menu-container serves as the 'tint' element */}
-      <div className="menu-container">
-        <h1 className="title">The Wandering Wraith</h1>
-        <p className="subtitle">...or the grand venture of going back to the grave.</p>
-
-        {/* The loading-text element */}
-        <div className={`loading-text ${!loading ? 'r' : ''}`}>Loading...</div>
-
-        <div id="o" className="r">
-          <button id="c">Continue</button>
-          <button id="n">New game</button>
-        </div>
-
-        <div id="f" className="r">
-          <h1>THE END</h1>
-          <p className="end-message">The wraith found his peace back in the grave.</p>
-          <p className="stat">Time: <span id="tm"></span></p>
-          <p className="stat">Collected <span id="p"></span>/75 crystals</p>
-          <p className="stat">Died <span id="d"></span> times</p>
-          <span className="hint">Press ESC to continue</span>
-        </div>
-        
-        {/* Placeholder for credits if needed by menu.ts */}
-        <div id="r" className="r"></div>
-      </div>
-
       <canvas ref={canvasRef}></canvas>
+
+      <div className="menu-container">
+        <div className="menu-card">
+          <p className="eyebrow">Cursorbits presents</p>
+          <h1 className="title">The Wandering Wraith</h1>
+          <p className="subtitle">A moonlit stealth platformer where your spirit fights to return to its grave.</p>
+
+          <div className={`loading-text ${!loading ? 'r' : ''}`}>
+            Summoning the spirit realm...
+          </div>
+
+          <div className="menu-actions" id="o">
+            <button id="c">Continue</button>
+            <button id="n">Start New Journey</button>
+          </div>
+
+          <div className="tip-row">
+            <span>Move: WASD / Arrow keys</span>
+            <span>Pause: ESC</span>
+          </div>
+
+          <div id="f" className="end-screen r">
+            <h2>THE END</h2>
+            <p className="end-message">The wraith found peace back in the grave.</p>
+            <p className="stat">Time: <span id="tm"></span></p>
+            <p className="stat">Collected <span id="p"></span>/75 crystals</p>
+            <p className="stat">Died <span id="d"></span> times</p>
+            <span className="hint">Press ESC to continue</span>
+          </div>
+
+          <div id="r" className="r"></div>
+        </div>
+      </div>
     </div>
   );
 }
