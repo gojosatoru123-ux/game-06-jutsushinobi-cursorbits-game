@@ -63,38 +63,23 @@ export default function App() {
       <canvas ref={canvasRef}></canvas>
 
       <div className="menu-container">
-        <div className="ambient ambient-a"></div>
-        <div className="ambient ambient-b"></div>
-        <div className="ambient ambient-c"></div>
-
         <div className="menu-card">
-          <div className="menu-top">
-            <p className="eyebrow">CURSORBITS • DARK FABLE EDITION</p>
-            <div className="chapter-pill">Chapter I · Return to the Grave</div>
-          </div>
-
+          <p className="eyebrow">Cursorbits presents</p>
           <h1 className="title">The Wandering Wraith</h1>
-          <p className="subtitle">
-            Drift through cursed ruins, outsmart deathly traps, and gather every crystal fragment to reclaim your eternal rest.
-          </p>
+          <p className="subtitle">A moonlit stealth platformer where your spirit fights to return to its grave.</p>
 
-          <div className="feature-grid" aria-hidden="true">
-            <span>Stealth Platforming</span>
-            <span>75 Crystals to Claim</span>
-            <span>Atmospheric Journey</span>
+          <div className={`loading-text ${!loading ? 'r' : ''}`}>
+            Summoning the spirit realm...
           </div>
-
-          <div className={`loading-text ${!loading ? 'r' : ''}`}>Conjuring moonlight, ruins, and spirits...</div>
 
           <div className="menu-actions" id="o">
             <button id="c">Continue</button>
-            <button id="n">Begin New Quest</button>
+            <button id="n">Start New Journey</button>
           </div>
 
           <div className="tip-row">
-            <span>Move · WASD / Arrows</span>
-            <span>Pause · ESC</span>
-            <span>Objective · Reach your grave</span>
+            <span>Move: WASD / Arrow keys</span>
+            <span>Pause: ESC</span>
           </div>
 
           <div id="f" className="end-screen r">
